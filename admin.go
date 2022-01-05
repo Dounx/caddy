@@ -16,7 +16,6 @@ package caddy
 
 import (
 	"bytes"
-	"context"
 	"crypto"
 	"crypto/tls"
 	"crypto/x509"
@@ -623,9 +622,7 @@ func stopAdminServer(srv *http.Server) error {
 	if srv == nil {
 		return fmt.Errorf("no admin server")
 	}
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-	err := srv.Shutdown(ctx)
+	err := srv.Close()
 	if err != nil {
 		return fmt.Errorf("shutting down admin server: %v", err)
 	}
